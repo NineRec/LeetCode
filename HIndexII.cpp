@@ -9,11 +9,21 @@
 class Solution {
 public:
     int hIndex(vector<int>& citations) {
-        int index = 0;
+        if (citations.empty()) return 0;
 
         int size = citations.size();
-        while (++index <= size && citations[size - index] >= index) {}
-        
-        return index;
+        int left = 0;
+        int right = size - 1;
+        int middle;
+
+        while (left < right) {
+            middle = (left + right) / 2;
+            if (citations[middle] >= size - middle){
+                right = middle;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return (citations[left]>=size-left)?size - left:size-left-1;
     }
 };
