@@ -1,3 +1,6 @@
 # LeetCode
 
-My Result For LeetCode Written With C++.
+My Result For LeetCode.
+
+. Algorithms is written in C++.  
+. Database is written in Sql.
