@@ -11,17 +11,19 @@
 class Solution {
 public:
     bool canPartition(vector<int>& nums) {
-        sort(nums.begin(), nums.end(), less_equal<int>());
         int sum = accumulate(nums.begin(), nums.end(), 0);
+        int target = sum / 2;
+        vector<bool> dp(target + 1, 0);
+        dp[0] = true;
 
-        return !(sum % 2) && canPartition(nums, sum / 2 - nums[0], 1);
-    }
+        for (auto num : nums)
+        {
+            for (int i = target; i >= num; --i)
+            {
+                dp[i] = dp[i] || dp[i - num];
+            }
+        }
 
-    bool canPartition(vector<int> &nums, int sum, int start) {
-        if (sum == 0) return true;
-        if (start >= nums.size() || sum < nums[start]) return false;
-
-        return  canPartition(nums, sum - nums[start], start + 1)
-            || canPartition(nums, sum, start + 1);
+        return !(sum % 2) && dp[target];
     }
 };
