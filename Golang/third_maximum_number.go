@@ -1,16 +1,14 @@
+// 414. Third Maximum Number
 // Given a non-empty array of integers, return the third maximum number
 // in this array. If it does not exist, return the maximum number.
 // The time complexity must be in O(n).
 
-// Package Golang is for go code on Leetcode.
-package Golang
+package golang
 
 func thirdMax(nums []int) int {
 	minInt := -(int(^uint(0) >> 1)) - 1
 
-	top1 := nums[0]
-	top2 := minInt
-	top3 := minInt
+	top1, top2, top3 := nums[0], minInt, minInt
 	for i := 1; i < len(nums); i++ {
 		if nums[i] == top1 || nums[i] == top2 || nums[i] <= top3 {
 			continue
