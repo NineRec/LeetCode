@@ -8,20 +8,22 @@ package golang
 
 // @lc code=start
 func longestPalindrome(s string) string {
+	// look each s-i, and expend to left + right.
+	// case 1: s-i in the middle; case 2: s[i] == s[i-1]
+
 	result := string(s[0])
 
 	for i := 1; i < len(s); i++ {
-		if s[i] == s[i-1] {
-			left, right := diffDirections(s, i-1, i)
-			if right-left+1 > len(result) {
-				result = string(s[left : right+1])
-			}
+		tmp := getLongest(s, i-1, i+1)
+		if len(result) < len(tmp) {
+			result = tmp
 		}
 
-		if i+1 < len(s) && s[i-1] == s[i+1] {
-			left, right := diffDirections(s, i-1, i+1)
-			if right-left+1 > len(result) {
-				result = string(s[left : right+1])
+		if s[i] == s[i-1] {
+			tmp := getLongest(s, i-2, i+1)
+
+			if len(result) < len(tmp) {
+				result = tmp
 			}
 		}
 	}
@@ -29,13 +31,13 @@ func longestPalindrome(s string) string {
 	return result
 }
 
-func diffDirections(s string, left, right int) (int, int) {
-	for left > 0 && right < len(s)-1 && s[left-1] == s[right+1] {
+func getLongest(s string, left, right int) string {
+	for left >= 0 && right < len(s) && s[left] == s[right] {
 		left--
 		right++
 	}
 
-	return left, right
+	return string(s[left+1 : right])
 }
 
 // @lc code=end

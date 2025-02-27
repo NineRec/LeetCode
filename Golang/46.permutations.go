@@ -12,21 +12,16 @@ func permute(nums []int) [][]int {
 		return [][]int{{nums[0]}}
 	}
 
-	resLen := 1
-	for i := 1; i <= len(nums); i++ {
-		resLen = resLen * i
-	}
+	output := [][]int{}
+	for i := 0; i < len(nums); i++ {
+		nums[0], nums[i] = nums[i], nums[0]
 
-	output := make([][]int, 0, resLen)
-
-	for i, num := range nums {
-		nums[0], nums[i] = nums[i], nums[0] // swap to index 0
-		subOutput := permute(nums[1:])
-		nums[0], nums[i] = nums[i], nums[0] // swap back
-
-		for _, ints := range subOutput {
-			output = append(output, append([]int{num}, ints...))
+		subRes := permute(nums[1:])
+		for _, slc := range subRes {
+			output = append(output, append(slc, nums[0]))
 		}
+
+		nums[0], nums[i] = nums[i], nums[0]
 	}
 	return output
 }

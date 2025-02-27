@@ -8,33 +8,38 @@ package golang
 
 // @lc code=start
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	val, idx1, idx2 := 0, -1, -1
-	for i := 0; i < (len(nums1)+len(nums2)+1)/2-1; i++ {
-		_, idx1, idx2 = next(nums1, nums2, idx1, idx2)
+	// odd  => idx: (len(nums1)+len(nums2))/2 +1
+	// even => idx: (len(nums1)+len(nums2))/2, (len(nums1)+len(nums2))/2+1
+	// m/2 n/2 <= k
+
+	// binary search =>
+	if (len(nums1)+len(nums2))%2 == 1 {
+		return float64(search(nums1, nums2, (len(nums1)+len(nums2))/2+1))
 	}
 
-	val, idx1, idx2 = next(nums1, nums2, idx1, idx2)
-	median := float64(val)
-	if (len(nums1)+len(nums2))%2 == 0 {
-		val, _, _ = next(nums1, nums2, idx1, idx2)
-		median = (median + float64(val)) / 2
-	}
-	return median
-
+	kthV := float64(search(nums1, nums2, (len(nums1)+len(nums2))/2))
+	nextV := float64(search(nums1, nums2, (len(nums1)+len(nums2))/2+1))
+	return (kthV + nextV) / 2
 }
 
-func next(nums1 []int, nums2 []int, idx1, idx2 int) (int, int, int) {
-	if idx1 == len(nums1)-1 {
-		return nums2[idx2+1], idx1, idx2 + 1
+func search(nums1 []int, nums2 []int, kth int) int {
+	if len(nums1) == 0 {
+		return nums2[kth-1]
 	}
-	if idx2 == len(nums2)-1 {
-		return nums1[idx1+1], idx1 + 1, idx2
+	if len(nums2) == 0 {
+		return nums1[kth-1]
 	}
 
-	if nums1[idx1+1] < nums2[idx2+1] {
-		return nums1[idx1+1], idx1 + 1, idx2
+	if kth == 1 {
+		return min(nums1[0], nums2[0])
+	}
+
+	mid1 := min(kth/2-1, len(nums1)-1)
+	mid2 := min(kth/2-1, len(nums2)-1)
+	if nums1[mid1] < nums2[mid2] {
+		return search(nums1[mid1+1:], nums2, kth-mid1-1)
 	} else {
-		return nums2[idx2+1], idx1, idx2 + 1
+		return search(nums1, nums2[mid2+1:], kth-mid2-1)
 	}
 }
 

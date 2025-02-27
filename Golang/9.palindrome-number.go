@@ -10,27 +10,13 @@ import (
 
 // @lc code=start
 func isPalindrome(x int) bool {
-	if x < 0 || (x != 0 && x%10 == 0) {
+	if x < 0 {
 		return false
 	}
 
-	rev := 0
-	for x > rev {
-		rev = rev*10 + x%10
-		x = x / 10
-	}
-	return x == rev || x == rev/10
-}
-
-// more fast
-func isPalindrome_string(x int) bool {
-	if x < 0 || (x != 0 && x%10 == 0) {
-		return false
-	}
-
-	str := strconv.FormatInt(int64(x), 10)
-	for i := 0; i < len(str)/2; i++ {
-		if str[i] != str[len(str)-1-i] {
+	strX := strconv.FormatInt(int64(x), 10)
+	for i := 0; i < len(strX)/2; i++ {
+		if strX[i] != strX[len(strX)-i-1] {
 			return false
 		}
 	}

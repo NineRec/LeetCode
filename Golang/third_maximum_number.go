@@ -5,10 +5,12 @@
 
 package golang
 
-func thirdMax(nums []int) int {
-	minInt := -(int(^uint(0) >> 1)) - 1
+import (
+	"math"
+)
 
-	top1, top2, top3 := nums[0], minInt, minInt
+func thirdMax(nums []int) int {
+	top1, top2, top3 := nums[0], math.MinInt, math.MinInt
 	for i := 1; i < len(nums); i++ {
 		if nums[i] == top1 || nums[i] == top2 || nums[i] <= top3 {
 			continue
@@ -24,7 +26,7 @@ func thirdMax(nums []int) int {
 		}
 	}
 
-	if top3 == minInt {
+	if top3 == math.MinInt {
 		return top1
 	}
 	return top3
